@@ -12,7 +12,7 @@ STICKERS_DIR = os.path.join(BASE_DIR, 'static')
 TST_DIR = os.path.join(BASE_DIR, 'tst')
 OUTPUT_DIR = os.path.join(BASE_DIR, 'output')
 
-SUPPORTED_FILES = ['png']
+SUPPORTED_FILES = ['webp']
 
 PACK_SIZE = 30
 AUTHOR = 'Guga'
@@ -40,6 +40,7 @@ def encode_images_to_base64(image_list):
         with open(os.path.join(STICKERS_DIR, image_file), 'rb') as fl:
             encoded_string = base64.b64encode(fl.read())
         sticker_data['image_data'] = encoded_string.decode('utf-8')
+        sticker_data['emojis'] = []
 
         encoded_images.append(sticker_data)
 
@@ -66,7 +67,7 @@ def main():
         last_sticker = last_item.replace('_0', '').replace('_', ' ')
 
         pack_dict['publisher'] = AUTHOR
-        pack_dict['name'] = f'{PACK_NAME} ({first_sticker} - {last_sticker})'
+        pack_dict['name'] = f'{first_sticker} - {last_sticker} {PACK_NAME}'
         pack_dict['identifier'] = f'{ID_PREFIX}-{first_item}-{last_item}'
 
         txt = Image.new('RGBA', base.size, (255,255,255,0))
@@ -81,8 +82,8 @@ def main():
         out = Image.alpha_composite(base, txt)
 
         buffered = io.BytesIO()
-        out = out.resize((250,250),Image.ANTIALIAS)
-        out.save(buffered, format="PNG", optimize=True, quality=95)
+        out = out.resize((96,96),Image.ANTIALIAS)
+        out.save(buffered, format="WEBP", optimize=True, quality=95)
         # out.save(os.path.join(OUTPUT_DIR, f'{first_item}.png'), 'PNG')
         img_str = base64.b64encode(buffered.getvalue())
         del buffered

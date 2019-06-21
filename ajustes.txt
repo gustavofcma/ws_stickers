@@ -1,0 +1,5 @@
+Resize dos PNGs para 512x512
+
+Conversão dos PNGs para WEBP
+
+Alteração do script para trabalhar com os arquivos WEBP
